@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SnowballCalculator.MainPage">
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Source="pbankmaui.png" Aspect="AspectFill" Grid.RowSpan="4" />
+        <Image Source="pbankTrans.png" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center"  WidthRequest="190" HeightRequest="190" Margin="-28,-44,0,0" Opacity="1" x:Name="pigImage"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+        </Grid>
+        
+        <VerticalStackLayout
+            Spacing="12"
+            VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="1" Grid.ColumnSpan="4">
+            <FlexLayout x:Name="flexLayout"
+                        Wrap="NoWrap">
+                <Border StrokeShape="RoundRectangle 0 0 12 12" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}" Margin="0,0,0,0" >
+                    <Border.Shadow>
+                        <Shadow   Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                Offset="0,20"
+                Radius="20"
+                Opacity="0.8" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label FontFamily="InterRegular" FontSize="10" Padding="6" TextColor="{AppThemeBinding Light=Black, Dark=White}">Interest:</Label>
+                        <Entry x:Name="txtInterest" TextChanged="updateData" Keyboard="Numeric" BackgroundColor="{AppThemeBinding Light=#65ffffff, Dark=#20ffffff}"></Entry>
+                    </VerticalStackLayout>
+                </Border>
+                <Border StrokeShape="RoundRectangle 0 0 12 12" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}" Margin="0,0">
+                    <Border.Shadow>
+                        <Shadow   Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                Offset="0,20"
+                Radius="20"
+                Opacity="0.8" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label FontFamily="InterRegular" FontSize="10" Padding="6" TextColor="{AppThemeBinding Light=Black, Dark=White}">Start Amount:</Label>
+                        <Entry x:Name="txtStart" TextChanged="updateData" Keyboard="Numeric" BackgroundColor="{AppThemeBinding Light=#65ffffff, Dark=#20ffffff}"></Entry>
+                    </VerticalStackLayout>
+                </Border>
+                <Border StrokeShape="RoundRectangle 0 0 12 12" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}" Margin="2,0">
+                    <Border.Shadow>
+                        <Shadow   Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                Offset="0,20"
+                Radius="20"
+                Opacity="0.8" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label FontFamily="InterRegular" FontSize="10" Padding="6" TextColor="{AppThemeBinding Light=Black, Dark=White}">Daily Contribution:</Label>
+                        <Entry x:Name="txtDaily" TextChanged="updateData" Keyboard="Numeric" BackgroundColor="{AppThemeBinding Light=#65ffffff, Dark=#20ffffff}"></Entry>
+                    </VerticalStackLayout>
+                </Border>
+                <Border StrokeShape="RoundRectangle 0 0 12 12" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}">
+                    <Border.Shadow>
+                        <Shadow   Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                Offset="0,20"
+                Radius="20"
+                Opacity="0.8" />
+                    </Border.Shadow>
+                    <VerticalStackLayout>
+                        <Label FontFamily="InterRegular" FontSize="10" Padding="6" TextColor="{AppThemeBinding Light=Black, Dark=White}">Current Age:</Label>
+                        <Entry x:Name="txtAge" TextChanged="updateData" Keyboard="Numeric" BackgroundColor="{AppThemeBinding Light=#65ffffff, Dark=#20ffffff}"></Entry>
+                    </VerticalStackLayout>
+                </Border>
+            </FlexLayout>            
+        </VerticalStackLayout>
+        <Border Margin="0,-4" BackgroundColor="{AppThemeBinding Light=#50ffffff, Dark=Black}" Stroke="#20ffffff" Grid.Row="1" VerticalOptions="End" HorizontalOptions="Center" Padding="6,-5,0,-5" StrokeShape="RoundRectangle 45">
+        <HorizontalStackLayout>
+            <Label VerticalOptions="Center" Padding="6,0,0,0">start calculations from today?</Label>
+            <CheckBox VerticalOptions="Center" x:Name="chkStartToday" CheckedChanged="chkStartToday_CheckedChanged"></CheckBox>
+                <Label VerticalOptions="Center">include Start in Contribution</Label>
+            <CheckBox VerticalOptions="Center" x:Name="chkStartContrib" CheckedChanged="chkStartContrib_CheckedChanged"></CheckBox>
+        </HorizontalStackLayout>
+        </Border>
+        <Ellipse StrokeThickness="12" Grid.RowSpan="4" Grid.ColumnSpan="4" Stroke="{AppThemeBinding Light=LightGray, Dark=Black}" WidthRequest="260" HeightRequest="195" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,-99" Fill="#25ffffff"></Ellipse>
+        <ScrollView Grid.Row="2" MaximumWidthRequest="800">
+            <VerticalStackLayout>
+                <Border Stroke="#10ffffff"
+        StrokeThickness="2"
+        StrokeShape="RoundRectangle 12"
+        BackgroundColor="{AppThemeBinding Light=#05000000, Dark=#40000000}"
+        Padding="12" Margin="6" x:Name="borderView">
+                    <ContentView x:Name="dataView" MaximumWidthRequest="600"></ContentView>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="3" BackgroundColor="#20000000" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="btnTrademark" Margin="-0.5" StrokeShape="RoundRectangle 0, 0, 0,90" BackgroundColor="{AppThemeBinding Light=#50000000, Dark=#05ffffff}" MaximumWidthRequest="200" MinimumWidthRequest="150" HorizontalOptions="Start">
+                <Border.GestureRecognizers>
+                    <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered" PointerExited="PointerGestureRecognizer_PointerExited"></PointerGestureRecognizer>
+                    
+                    <ClickGestureRecognizer Clicked="ClickGestureRecognizer_Clicked"></ClickGestureRecognizer>
+                    <TapGestureRecognizer Tapped="ClickGestureRecognizer_Clicked"></TapGestureRecognizer>
+                </Border.GestureRecognizers>
+                <Label Opacity="0.7" x:Name="txtTrademark" FontFamily="InterNormal" TextColor="White" Text="pishah llc"  VerticalOptions="Center" HorizontalOptions="Center">
+                
+                
+                
+            </Label>
+            </Border>
+            <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Italic" FontSize="12" FontFamily="InterLight" Padding="12,0" VerticalTextAlignment="Center">*based on Robinhood Scheduled daily reoccurring, 21 average investing days per month</Label>
+            <Grid Grid.Column="2" HorizontalOptions="End" BackgroundColor="#50000000" Padding="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label VerticalOptions="Center" Opacity="0.7" TextColor="White">normal/fancy:</Label>
+                <CheckBox Grid.Column="1" x:Name="toggleView" CheckedChanged="toggleView_CheckedChanged" VerticalOptions="Start"></CheckBox>
+            </Grid>
+        </Grid>
+        <VerticalStackLayout x:Name="audioHolder" Grid.Row="2" Scale="0">
+            <toolkit:MediaElement x:Name="mediaElement1"
+                      ShouldAutoPlay="False"
+                      Source="embed://resources/raw/1.mp3"  />
+            <toolkit:MediaElement x:Name="mediaElement2"
+                      ShouldAutoPlay="False"
+                      Source="embed://resources/raw/2.mp3"  />
+            <toolkit:MediaElement x:Name="mediaElement3"
+                      ShouldAutoPlay="False"
+                      Source="embed://resources/raw/3.mp3" />
+            <toolkit:MediaElement x:Name="mediaElement4"
+                      ShouldAutoPlay="False"
+                      Source="embed://resources/raw/2.mp3" />
+            
+        </VerticalStackLayout>
+        <Grid Grid.RowSpan="4" BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}" x:Name="splashGrid">
+            <Image Source="logo.png" x:Name="imgLogo" />
+        </Grid>
+    </Grid>
+</ContentPage>
