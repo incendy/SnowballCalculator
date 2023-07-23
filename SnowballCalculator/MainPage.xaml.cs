@@ -43,10 +43,7 @@ public partial class MainPage : ContentPage
         //add method for page load for initial setup
        this.Loaded += MainPage_Loaded;
         //set lastinput variable to now
-        lastInput = DateTime.Now.TimeOfDay;
-        
-        
-        
+        lastInput = DateTime.Now.TimeOfDay;       
     }
     #region Bool Preferences for start
     //method to set preference for the includeStartContribution
@@ -115,7 +112,6 @@ public partial class MainPage : ContentPage
         int str = 0;
         double strr = -2;
         //loop through each element and animate it
-        
         
         foreach (var v in verts)
         {
@@ -250,9 +246,6 @@ public partial class MainPage : ContentPage
         mediaPl = audioHolder.Children.OfType<MediaElement>().ToList();
         txtInterest.Focus();
     }
-    
-
-  
     private void playMedia() {
         mediaPl[currentMediaIndex].Stop();
         mediaPl[currentMediaIndex].Play();
@@ -313,27 +306,16 @@ public partial class MainPage : ContentPage
         {
             toret = false;
         }
-        
         return toret;
-
     }
     public async Task doCalculations()
     {
-
-
         var dt = await setData();
-        //lData.Clear();
-        //foreach (var i in data) {
-        //    lData.Add(i);
-        //}
-        //lData = data.ToObservableCollection();
-        
         dataView.Content = dt;
         borderView.FadeTo(1, 250, Easing.SinIn);
         this.AbortAnimation("PigAnimation");
         isAnimating = false;
         isWaiting = false;
-
 
     }
     public async Task<Grid> setData()
@@ -459,7 +441,6 @@ public partial class MainPage : ContentPage
         var isRich = false;
         var isInterestKing = false;
         //add our contribution amount, in this calculator it is always the same number so no need to add interest etc. If the variable to include the start amount was checked, the start value was already set to include that amount before we call the method.
-        
         //set our variables for daily interest and contribution, these will ignore the start date always based on 365 days
         double interest = 0;
         double contrib = 0;
@@ -558,9 +539,6 @@ public partial class MainPage : ContentPage
 
         }
     }
-
-
-
     private void chkStartToday_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         //set preference value for whether to build off of today or beginning or year
@@ -589,7 +567,7 @@ public partial class MainPage : ContentPage
 
     private async void ClickGestureRecognizer_Clicked(object sender, EventArgs e)
     {
-        Uri uri = new Uri("https://www.microsoft.com");
+        Uri uri = new Uri("https://pishah.com");
         await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
     }
 
@@ -616,6 +594,7 @@ public class snowballData
     public double contribution { get; set; }
     public bool rich { get; set; }
     public bool interestKing { get; set; }
+    //these next two were for when I was using Xaml for the grid, disregard
     public string totalBold { get; set; }
     public string interestBold { get; set; }
     public snowballData(int age, calculatedValue val)
