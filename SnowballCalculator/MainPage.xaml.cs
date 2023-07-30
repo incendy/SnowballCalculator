@@ -8,6 +8,7 @@ using CommunityToolkit;
 using CommunityToolkit.Maui.Views;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Core.Extensions;
+using Microsoft.Graphics.Canvas.Effects;
 
 namespace SnowballCalculator;
 
@@ -44,6 +45,30 @@ public partial class MainPage : ContentPage
        this.Loaded += MainPage_Loaded;
         //set lastinput variable to now
         lastInput = DateTime.Now.TimeOfDay;       
+    }
+    private async void MainPage_Loaded(object sender, EventArgs e)
+    {
+        //setup our data on first run
+        //set our checkbox values to the methods for preferences
+        chkStartToday.IsChecked = getStartTodayPref(null);
+        chkStartContrib.IsChecked = getIncStartContribPref(null);
+        //setup variables for animating some things for fun
+        borderView.Scale = 0;
+        //set trademark value, feel free to change to your own
+        txtTrademark.Text = DateTime.Now.Year.ToString() + " Pishah LLC.";
+        //animate our company logo
+        imgLogo.Scale = 0.5;
+        //await animation of logo to finish
+        await imgLogo.ScaleTo(0, 2000, Easing.SpringIn);
+        //setup ui animation
+        vertsAnimationSpecial(true);
+        //animate compnay logon background opacity to fade out
+        await splashGrid.FadeTo(0, 512, null);
+        //remove our company element from app when done
+        mainGrid.Remove(splashGrid);
+        var st = 0;
+        mediaPl = audioHolder.Children.OfType<MediaElement>().ToList();
+        txtInterest.Focus();
     }
     #region Bool Preferences for start
     //method to set preference for the includeStartContribution
@@ -104,97 +129,57 @@ public partial class MainPage : ContentPage
                 await v.TranslateTo(0, 100, 0);
             }
         }
-
+        var totalWidth = flexLayout.Width;
+        
+        double startTransVal = (verts.Count / 2) * -1;
+        double transMod = (verts[0].Height * -1) / 1.5;
+        
         //setup variable for animating the Border Element for our Text Entries
         uint tm = 1000;
-        var startrot = -22.5;
+        var startrot = -23.5;
         double rotVal = 0;
-        int str = 0;
+        double startTrans = 0;
+        //int str = 0;
         double strr = -2;
         //loop through each element and animate it
-        
+        flexLayout.TranslateTo(0, verts[0].Height / 1.5, 1000, Easing.Linear);
         foreach (var v in verts)
-        {
-            //this is very hacked together to make elements look somewhat right. I should use math to do exact calculations based on width and position of element here but I was just having fun and not taking too serious.
-            if (str == 0 || str == 3)
-            {
-                v.TranslateTo(0, -40, tm, Easing.SpringOut);
-            }
-            else
-            {
-                if (str == 2)
-                {
-                    v.TranslateTo(0, 6, tm, Easing.SpringOut);
-                }
-                else
-                {
-                    v.TranslateTo(0, 0, tm, Easing.SpringOut);
-                }
-            }
-            str++;
+        {            
+            var y = startTransVal + startTrans;
             rotVal = startrot * strr;
-            if (strr != 1)
-            {
-                if (strr == -2)
-                {
-                    v.RotateTo(50);
-                }
-                else
-                {
-                    v.RotateTo(rotVal);
-                }
-
-            }
-            else
-            {
-                if (strr == 1)
-                    v.RotateTo(-9);
-            }
-
+            v.TranslateTo(0, transMod * Math.Abs(y), tm, Easing.SpringOut);
+            v.RotateTo(rotVal);
+            startTrans++;
             strr++;
             if (strr == 0)
             {
                 strr = 1;
             }
+            if (startTrans == 2)
+            {
+                startTrans++;
+            }
             tm = tm + 250;
         }
     }
+   
     public async void vertAnimationDefault()
     {
         //loop through our Border visual elements that hold our Text Entries and animate them back to the non fancy view.
         var verts = flexLayout.Children.OfType<Border>().ToList();
         uint tm = 1000;
-        var startrot = -22.5;
+        
         double rotVal = 0;
         int str = 0;
         double strr = -2;
+        flexLayout.TranslateTo(0, 0, 1000, Easing.Linear);
         //loop through each element and animate it
         foreach (var v in verts)
         {
             //this is very hacked together to make elements look somewhat right. I should use math to do exact calculations based on width and position of element here but I was just having fun and not taking too serious.
-            if (str == 0 || str == 3)
-            {
-                if (str == 0)
-                {
-                    v.TranslateTo(-4, 8, tm, Easing.SpringOut);
-                }
-                else {
-                    v.TranslateTo(0, 8, tm, Easing.SpringOut);
-                }
-            }
-            else
-            {
-                if (str == 2)
-                {
-                    v.TranslateTo(0, 8, tm, Easing.SpringOut);
-                }
-                else
-                {
-                    v.TranslateTo(0, 8, tm, Easing.SpringOut);
-                }
-            }
+            v.TranslateTo(0, 8, tm, Easing.SpringOut);
             str++;
-            rotVal = startrot * strr;
+            
             if (strr != 1)
             {
                 if (strr == -2)
@@ -222,30 +207,7 @@ public partial class MainPage : ContentPage
         }
     }
     #endregion
-    private async void MainPage_Loaded(object sender, EventArgs e)
-    {
-        //setup our data on first run
-        //set our checkbox values to the methods for preferences
-        chkStartToday.IsChecked = getStartTodayPref(null);
-        chkStartContrib.IsChecked = getIncStartContribPref(null);
-        //setup variables for animating some things for fun
-        borderView.Scale = 0;
-        //set trademark value, feel free to change to your own
-        txtTrademark.Text = DateTime.Now.Year.ToString() + " Pishah LLC.";
-        //animate our company logo
-        imgLogo.Scale = 0.5;
-        //await animation of logo to finish
-        await imgLogo.ScaleTo(0, 2000, Easing.SpringIn);
-        //setup ui animation
-        vertsAnimationSpecial(true);
-        //animate compnay logon background opacity to fade out
-        await splashGrid.FadeTo(0, 512, null);
-        //remove our company element from app when done
-        mainGrid.Remove(splashGrid);
-        var st = 0;
-        mediaPl = audioHolder.Children.OfType<MediaElement>().ToList();
-        txtInterest.Focus();
-    }
+   
     private void playMedia() {
         mediaPl[currentMediaIndex].Stop();
         mediaPl[currentMediaIndex].Play();
