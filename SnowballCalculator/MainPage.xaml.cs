@@ -8,7 +8,7 @@ using CommunityToolkit;
 using CommunityToolkit.Maui.Views;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Core.Extensions;
-using Microsoft.Graphics.Canvas.Effects;
+
 
 namespace SnowballCalculator;
 
@@ -33,11 +33,12 @@ public partial class MainPage : ContentPage
     //Variable to set and check if already animating the pig during refresh 
     private bool isAnimating = false;
     //Items used in methods below to check for multiple inputs
+    private int yearsContribute = 1000;
     CancellationTokenSource tokenInput = new CancellationTokenSource();
     CancellationToken token = new CancellationToken();
     private List<MediaElement> mediaPl;
     private int currentMediaIndex = 0;
-  
+    private int contribYearsIndex = 0;
     public MainPage()
     {
         InitializeComponent();
@@ -132,7 +133,7 @@ public partial class MainPage : ContentPage
         var totalWidth = flexLayout.Width;
         
         double startTransVal = (verts.Count / 2) * -1;
-        double transMod = (verts[0].Height * -1) / 1.5;
+        double transMod = (verts[0].Height * -1) / 1.25;
         
         //setup variable for animating the Border Element for our Text Entries
         uint tm = 1000;
@@ -286,6 +287,8 @@ public partial class MainPage : ContentPage
         contribSt = 0;
         //set the start value for the interest to add onto
         interestSt = 0;
+        //set the start value for amount of years for Contributions
+        contribYearsIndex = 0;
         //create the grid for our data, probabably be better to use a template to style easier etc but for my use here this was what I chose
         var dataGridContainer = new Grid
         {
@@ -335,6 +338,12 @@ public partial class MainPage : ContentPage
             //default age variable incase there is no input
             int age = 0;
             int.TryParse(txtAge.Text, out age);
+            //default years contribute incase there is no value
+            yearsContribute = 1000;
+            int.TryParse(txtContribYears.Text, out yearsContribute);
+            if (yearsContribute <= 0) {
+                yearsContribute = 1000;
+            }
             //clear our List of data out to start over building it
             data.Clear();
 
@@ -361,6 +370,7 @@ public partial class MainPage : ContentPage
                     data.Add(new snowballData(age, calculated));
                     //update the age to +1
                     age++;
+                    contribYearsIndex++;
                 }
                 catch { }
             }
@@ -392,6 +402,10 @@ public partial class MainPage : ContentPage
     }
     public calculatedValue calculatedNumber(double amount, double contribution, double rate, int daysIndex, bool startToday)
     {
+        //check if years contribute exceeded
+        if (contribYearsIndex >= yearsContribute) {
+            contribution = 0;
+        }
         //we are calculating our interest daily so we set the days to 365 here. Not sure this is the best way since we are technically doing 21 days per month but in my head easier to work with
         var days = 365;
         //if this is the first item in our data we check the variable to see if we should start based on today or beginning of the year
@@ -471,14 +485,29 @@ public partial class MainPage : ContentPage
         //the null check is again trying to figure out the Android issue, not sure can remove once we figure out the cause
         if (s != null)
         {
+            
             dataGridContainer.RowDefinitions.Add(new RowDefinition());
+            //hack to add bottom border, probably a better way but I am not sure how else to do this
+            ContentView bord = new ContentView();
+            bord.BackgroundColor = Colors.Gray;
+            bord.Margin = new Thickness(0, 14, 0, 0);
+            bord.HeightRequest = 1;
+            bord.Opacity = 0.2;
+            //add labels for all our data
             var lblAge = new Label();
             lblAge.Text = s.age.ToString();
             var lblTotal = new Label();
+            Style msStyle = null;
+            var hasValue = Application.Current.Resources.TryGetValue("LblSelected", out object mStyle);
+            if (hasValue)
+            {
+                msStyle = (Style)mStyle;
+            }
             //check millionaire milestone and make bold if true
             if (s.rich)
             {
                 lblTotal.FontFamily = "InterBold";
+                lblTotal.Style = msStyle;
             }
             lblTotal.Text = s.total.ToString("C", CultureInfo.CurrentCulture);
             var lblInterest = new Label();
@@ -490,9 +519,15 @@ public partial class MainPage : ContentPage
             if (s.interestKing)
             {
                 lblInterest.FontFamily = "InterExtraBold";
+                lblInterest.Style = msStyle;
                 lblContrib.FontFamily = "InterBold";
+                lblContrib.Style = msStyle;
             }
             lblContrib.Text = s.contribution.ToString("C", CultureInfo.CurrentCulture);
+            //add bottom border hack
+            dataGridContainer.Add(bord, 0, index);
+            Grid.SetColumnSpan(bord, 5);
+            //add labels to our new grid row
             dataGridContainer.Add(lblAge, 0, index);
             dataGridContainer.Add(lblTotal, 1, index);
             dataGridContainer.Add(lblInterest, 2, index);

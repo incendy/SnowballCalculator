@@ -62,11 +62,14 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\1.mp3" />
+	  <None Remove="Resources\Images\dollarBillsBlur.png" />
+	  <None Remove="Resources\Images\dollarpastel.png" />
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\pbank22.png" />
 	  <None Remove="Resources\Images\pbankMaui.png" />
 	  <None Remove="Resources\Images\pbankmauicopy.png" />
 	  <None Remove="Resources\Images\pbankTrans.png" />
+	  <None Remove="Resources\Images\pishahblur.png" />
 	  <None Remove="Resources\Raw\1.mp3" />
 	  <None Remove="Resources\Raw\1.wav" />
 	  <None Remove="Resources\Raw\2.mp3" />
