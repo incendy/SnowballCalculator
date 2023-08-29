@@ -8,7 +8,7 @@ using CommunityToolkit;
 using CommunityToolkit.Maui.Views;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Core.Extensions;
-
+using System.Text.RegularExpressions;
 
 namespace SnowballCalculator;
 
@@ -54,7 +54,8 @@ public partial class MainPage : ContentPage
         chkStartToday.IsChecked = getStartTodayPref(null);
         chkStartContrib.IsChecked = getIncStartContribPref(null);
         //setup variables for animating some things for fun
-        borderView.Scale = 0;
+        //borderView.Scale = 0;
+        await borderView.FadeTo(0.75, 0, null);
         //set trademark value, feel free to change to your own
         txtTrademark.Text = DateTime.Now.Year.ToString() + " Pishah LLC.";
         //animate our company logo
@@ -64,12 +65,13 @@ public partial class MainPage : ContentPage
         //setup ui animation
         vertsAnimationSpecial(true);
         //animate compnay logon background opacity to fade out
-        await splashGrid.FadeTo(0, 512, null);
+        await splashGrid.FadeTo(0, 1012, null);
         //remove our company element from app when done
         mainGrid.Remove(splashGrid);
         var st = 0;
         mediaPl = audioHolder.Children.OfType<MediaElement>().ToList();
         txtInterest.Focus();
+        updateData(null, null);
     }
     #region Bool Preferences for start
     //method to set preference for the includeStartContribution
@@ -221,6 +223,11 @@ public partial class MainPage : ContentPage
     //method called when text Entry is changed
     private async void updateData(object sender, TextChangedEventArgs e)
     {
+        if (sender != null)
+        {
+            Entry s = (Entry)sender;
+            s.Text = Regex.Replace(s.Text, "[^0-9.]", "");
+        }
         playMedia();
         borderView.FadeTo(0.5, 250, Easing.SinIn);
         refreshAnimation();

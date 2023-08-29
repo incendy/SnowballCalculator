@@ -11,9 +11,10 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image Source="pishahblur.png" Aspect="AspectFill" Grid.RowSpan="4" />
+        
+        <Image Source="pishahblur.png" Aspect="AspectFill" Grid.RowSpan="4" Opacity="0.5" />
         <Image Source="pbankTrans.png" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center"  WidthRequest="130" HeightRequest="130" Margin="-28,-44,0,0" x:Name="pigImage"/>
-
+        
         <Ellipse StrokeThickness="44" Grid.RowSpan="4" Grid.ColumnSpan="4" Stroke="{AppThemeBinding Light=#efefef, Dark=Black}" WidthRequest="280" HeightRequest="270" VerticalOptions="Start" HorizontalOptions="Center" Margin="-0,-170,0,0" Fill="{AppThemeBinding Light=#25000000, Dark=#25ffffff}"></Ellipse>
         <VerticalStackLayout
             Spacing="30"
@@ -150,7 +151,7 @@
 
         </VerticalStackLayout>
         <Grid Grid.RowSpan="4" x:Name="splashGrid" BackgroundColor="Black">
-            <Image Source="pishahblur.png" Aspect="AspectFill" />
+            <Image Source="pishahblur.png" Aspect="AspectFill" Opacity="0.25" />
             <Image Source="logo.png" x:Name="imgLogo" />
         </Grid>
     </Grid>
