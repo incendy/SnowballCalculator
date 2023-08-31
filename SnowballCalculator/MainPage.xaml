@@ -109,13 +109,13 @@
             </Border>
             
        
-        <Grid Grid.Row="3" Grid.ColumnSpan="4" BackgroundColor="{AppThemeBinding Light=#50000000, Dark=#05ffffff}">
+        <Grid Grid.Row="3" Grid.ColumnSpan="4" BackgroundColor="{AppThemeBinding Light=#05000000, Dark=#05ffffff}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25*"></ColumnDefinition>
                 <ColumnDefinition Width="50*"></ColumnDefinition>
                 <ColumnDefinition Width="25*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border x:Name="btnTrademark" Margin="-0.5" StrokeShape="RoundRectangle 0, 0, 0,90" BackgroundColor="{AppThemeBinding Light=#50000000, Dark=#05ffffff}" MaximumWidthRequest="200" MinimumWidthRequest="150" HorizontalOptions="Start">
+            <Border x:Name="btnTrademark" Margin="-0.5" StrokeShape="RoundRectangle 0, 0, 0,90" Stroke="#00000000" BackgroundColor="{AppThemeBinding Light=#50000000, Dark=#05ffffff}" MaximumWidthRequest="200" MinimumWidthRequest="150" HorizontalOptions="Start">
                 <Border.GestureRecognizers>
                     <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered" PointerExited="PointerGestureRecognizer_PointerExited"></PointerGestureRecognizer>
 
@@ -125,7 +125,7 @@
                 <Label Opacity="0.7" x:Name="txtTrademark" FontFamily="InterNormal" TextColor="White" Text="pishah llc"  VerticalOptions="Center" HorizontalOptions="Center">
                 </Label>
             </Border>
-            <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Italic" FontSize="12" FontFamily="InterLight" Padding="12,0" TextColor="{AppThemeBinding Light=#60ffffff, Dark=#60ffffff}" VerticalTextAlignment="Center">*based on Robinhood Scheduled daily reoccurring, 21 average investing days per month</Label>
+            <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Italic" FontSize="16" FontFamily="InterLight" Padding="12,0" TextColor="{AppThemeBinding Light=#000000, Dark=#80ffffff}" VerticalTextAlignment="Center">*based on Robinhood Scheduled daily reoccurring, 21 average investing days per month</Label>
             <Grid Grid.Column="2" HorizontalOptions="End" BackgroundColor="#50000000" Padding="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
